@@ -21,6 +21,7 @@ def generate_keys():
 
 
 def sign(message, private):
+    message = bytes(message, 'utf-8')
     sig = private.sign(
         message,
         padding.PSS(
@@ -33,6 +34,7 @@ def sign(message, private):
 
 
 def verify(message, sig, public):
+    message = bytes(message, 'utf-8')
     try:
         public.verify(
             sig,
@@ -55,7 +57,7 @@ if __name__ == '__main__':
     pr, pu = generate_keys()
     print(pr)
     print(pu)
-    message = b"This is a secret message"
+    message = "This is a secret message"
     sig = sign(message, pr)
     print(sig)
     correct = verify(message, sig, pu)
@@ -76,7 +78,7 @@ if __name__ == '__main__':
     else:
         print("Success! Bad sig detected")
 
-    badmess = message + b"Q"
+    badmess = message + "Q"
 
     correct = verify(badmess, sig, pu)
 
